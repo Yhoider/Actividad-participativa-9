@@ -35,10 +35,10 @@ class DatosMeteorologicos:
 
         for linea in lineas:
             if "Estacion" in linea:
-                continue  # Ignorar la línea de estación
+                continue  
             datos = linea.splitlines()
             for dato in datos:
-                if dato.strip():  # Solo procesar líneas no vacías
+                if dato.strip():  
                     clave, valor = dato.split(": ")
                     if clave == "Temperatura":
                         temperaturas.append(float(valor))
@@ -51,31 +51,30 @@ class DatosMeteorologicos:
                         vientos.append(float(velocidad))
                         direcciones_viento.append(direccion)
 
-        # Calcular promedios
+        
         temp_promedio = sum(temperaturas) / len(temperaturas)
         humedad_promedio = sum(humedades) / len(humedades)
         presion_promedio = sum(presiones) / len(presiones)
         viento_promedio = sum(vientos) / len(vientos)
 
-        # Calcular dirección predominante del viento
+       
         grados_viento = [self.DIRECCIONES_VIENTO[d] for d in direcciones_viento]
         direccion_promedio = sum(grados_viento) / len(grados_viento)
 
-        # Convertir de grados a dirección
+        
         direccion_final = self.obtener_direccion(direccion_promedio)
 
         return (temp_promedio, humedad_promedio, presion_promedio, viento_promedio, direccion_final)
 
     def obtener_direccion(self, grados: float) -> str:
-        # Normalizar grados a 0-360
+       
         grados = grados % 360
-        # Encontrar la dirección más cercana
         direcciones = list(self.DIRECCIONES_VIENTO.keys())
         diferencias = [abs(grados - self.DIRECCIONES_VIENTO[d]) for d in direcciones]
         indice_minimo = diferencias.index(min(diferencias))
         return direcciones[indice_minimo]
 
-# Uso de la clase
+
 datos = DatosMeteorologicos('datos.txt')
 estadisticas = datos.procesar_datos()
 print("Temperatura promedio:", estadisticas[0])
