@@ -33,9 +33,7 @@ class DatosMeteorologicos:
         with open(self.filename, 'r') as file:
             lineas = file.readlines()
 
-        for linea in lineas:
-            if "Estacion" in linea:
-                continue  
+        for linea in lineas: 
             datos = linea.splitlines()
             for dato in datos:
                 if dato.strip():  
